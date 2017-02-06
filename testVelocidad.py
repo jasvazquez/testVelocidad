@@ -43,9 +43,8 @@ def mock_invocarComando(comando, params, **sustituciones):
 	"Upload: 3.01 Mbit/s"
 
 def insertarMedicion(ping, bajada, subida):
-	# TODO poner hora del sistema
-	t_ins=("2017.02.06 12:01:02",ping,bajada,subida)
-	c=db_execute('insert into anotacion values (?,?,?,?)',t_ins)
+	t_ins=(ping,bajada,subida)
+	c=db_execute('insert into anotacion (ping, bajada, subida) values (?,?,?)',t_ins)
 
 insertarMedicion("73 ms","12.72 Mbits/s","2.34 Mbits/s")	
 quit()
