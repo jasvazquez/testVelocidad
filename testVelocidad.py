@@ -43,11 +43,13 @@ def invocarComando(comando, params, **sustituciones):
 def mock_invocarComando(comando, params, **sustituciones):
 	return 	'{"download": 37788675.986478955, "timestamp": "2017-02-06T18:55:18.024380", "ping": 88.011, "upload": 2796322.6507512033, "server": {"latency": 88.011, "name": "Sevilla", "url": "http://speedtest.sev.adamo.es/speedtest/upload.php", "country": "Spain", "lon": "-5.9869", "cc": "ES", "host": "speedtest.sev.adamo.es:8080", "sponsor": "Adamo", "url2": "http://speed.sev.adamo.es/speedtest/upload.php", "lat": "37.3772", "id": "5487", "d": 41.073372033169306}}'
 
-def insertarMedicion(ping, bajada, subida):
-	t_ins=(ping,bajada,subida)
-	c=db_execute('insert into anotacion (ping, bajada, subida) values (?,?,?)',t_ins)
+def insertarMedicion(ping, bajada, subida, servidor):
+	t_ins=(ping,bajada,subida,servidor)
+	c=db_execute('insert into anotacion (ping, bajada, subida, server) values (?,?,?,?)',t_ins)
 
-rsdo=invocarComando("speedtest"," --json --server 7385")
+# TODO recuperar trigger e ID autonumerico
+
+rsdo=mock_invocarComando("speedtest"," --json --server {S}", S=7385)
 r = simplejson.loads(rsdo)
-print "Anotamos {P} ms -- {D} Mbits/s -- {U} ".format(P=r['ping'],D=r['download']/10**6,U=r['upload']/10**6)
-insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6)
+print "Anotamos ID: {S} -- {P} ms -- {D} Mbits/s -- {U} ".format(S=r['server']['id'],P=r['ping'],D=r['download']/10**6,U=r['upload']/10**6)
+insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
