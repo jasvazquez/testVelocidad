@@ -3,8 +3,11 @@
 
 import ushlex as shlex
 import os, sys, subprocess
+
 import sqlite3
 from collections import namedtuple
+
+import simplejson
 
 def getDirectorioEjecucionScript():
 	return os.path.dirname(os.path.abspath(__file__))
@@ -38,19 +41,13 @@ def invocarComando(comando, params, **sustituciones):
 	return str(convert)
 
 def mock_invocarComando(comando, params, **sustituciones):
-	return 	"Ping: 88.273 ms \n"\
-	"Download: 9.23 Mbit/s \n" \
-	"Upload: 3.01 Mbit/s"
+	return 	'{"download": 37788675.986478955, "timestamp": "2017-02-06T18:55:18.024380", "ping": 88.011, "upload": 2796322.6507512033, "server": {"latency": 88.011, "name": "Sevilla", "url": "http://speedtest.sev.adamo.es/speedtest/upload.php", "country": "Spain", "lon": "-5.9869", "cc": "ES", "host": "speedtest.sev.adamo.es:8080", "sponsor": "Adamo", "url2": "http://speed.sev.adamo.es/speedtest/upload.php", "lat": "37.3772", "id": "5487", "d": 41.073372033169306}}'
 
 def insertarMedicion(ping, bajada, subida):
 	t_ins=(ping,bajada,subida)
 	c=db_execute('insert into anotacion (ping, bajada, subida) values (?,?,?)',t_ins)
 
-insertarMedicion("73 ms","12.72 Mbits/s","2.34 Mbits/s")	
-quit()
-
-rsdo=mock_invocarComando("speedtest"," --simple --server 7385")
-
-for r in rsdo.rstrip().split('\n'):
-	valor=r.split(":")[1].strip()
-	print ">>> {L}".format(L=valor)
+rsdo=invocarComando("speedtest"," --json --server 7385")
+r = simplejson.loads(rsdo)
+print "Anotamos {P} ms -- {D} Mbits/s -- {U} ".format(P=r['ping'],D=r['download']/10**6,U=r['upload']/10**6)
+insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6)
