@@ -47,9 +47,8 @@ def insertarMedicion(ping, bajada, subida, servidor):
 	t_ins=(ping,bajada,subida,servidor)
 	c=db_execute('insert into anotacion (ping, bajada, subida, server) values (?,?,?,?)',t_ins)
 
-# TODO recuperar trigger e ID autonumerico
-
-rsdo=mock_invocarComando("speedtest"," --json --server {S}", S=7385)
+#rsdo=invocarComando("speedtest"," --json --server {S}", S=7385)
+rsdo=invocarComando("speedtest"," --json")
 r = simplejson.loads(rsdo)
-print "Anotamos ID: {S} -- {P} ms -- {D} Mbits/s -- {U} ".format(S=r['server']['id'],P=r['ping'],D=r['download']/10**6,U=r['upload']/10**6)
+#print "Anotamos ID: {S} -- {P} ms -- {D} Mbits/s -- {U} ".format(S=r['server']['id'],P=r['ping'],D=r['download']/10**6,U=r['upload']/10**6)
 insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
