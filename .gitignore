@@ -2,4 +2,5 @@ bin/
 include/
 lib/
 pip-selfcheck.json
+*.svg
 __pycache__/
