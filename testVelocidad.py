@@ -14,6 +14,8 @@ from pygal.style import CleanStyle
 
 import datetime
 
+import argparse
+
 def getDirectorioEjecucionScript():
 	return os.path.dirname(os.path.abspath(__file__))
 	
@@ -102,33 +104,60 @@ def setConfig(nombFichero):
 	with open(nombFichero) as data_file:    
 		config = json.load(data_file)
 
+# Muestra información de la aplicación
+def printVersion():
+	print('RadarADSL v1.0')
+	print(u"By Informático de Guardia".encode("utf-8"))
+	print(u'-------------------------\n')
+	print(u'Script para el seguimiento y evaluación de nuestra velocidad de conexión a Internet en un periodo de tiempo determinado.\n')
+
+def generarGraficas(rutaSVGRsdo):
+	dia=[]
+	max=[]
+	min=[]
+	avg=[]
+
+	anotaciones=getAnotacionesSemanales()
+
+	for a in anotaciones:
+		
+		# IDEA traducir día de la semana (Monday, Tuesday, ...) al castellano
+		
+		dia.append(datetime.datetime.strptime(a.dia, "%Y-%m-%d").strftime("%a %d/%b"))
+		max.append(float(a.max_bajada))
+		min.append(float(a.min_bajada))
+		avg.append(float(a.avg_bajada))
+
+	chart = pygal.Line(fill=True)
+	chart.title = 'Velocidad BAJADA (semanal)'
+	chart.x_labels = dia 
+	chart.add('Max', max)
+	chart.add('Avg', avg)
+	chart.add('Min', min)
+	chart.render()
+
+	chart.render_to_file('chart.svg')  	
+	
 setConfig('./config.json')
 
-dia=[]
-max=[]
-min=[]
-avg=[]
+parser=argparse.ArgumentParser()
+parser.add_argument('-g', '--grafica', help=u'Muestra gráficamente las velocidades registradas'.encode("utf-8"), default=4, type=int)
+parser.add_argument('-v', '--version',help=u"Muestra la version del programa".encode("utf-8"),action="store_true")
 
-anotaciones=getAnotacionesSemanales()
+args = parser.parse_args()
 
-for a in anotaciones:
-	
-	# IDEA traducir día de la semana (Monday, Tuesday, ...) al castellano
-	
-	dia.append(datetime.datetime.strptime(a.dia, "%Y-%m-%d").strftime("%a %d/%b"))
-	max.append(float(a.max_bajada))
-	min.append(float(a.min_bajada))
-	avg.append(float(a.avg_bajada))
+if args.version:
+	printVersion()
+	exit(0)     
 
-chart = pygal.Line(fill=True)
-chart.title = 'BAJADA semanal'
-chart.x_labels = dia #map(str, range(2002, 2013))
-chart.add('Max', max)
-chart.add('Avg', avg)
-chart.add('Min', min)
-chart.render()
+if args.grafica:
+	generarGraficas('./chart.svg')
+	exit(0)
 
-chart.render_to_file('chart.svg')  
+# IDEA gráfica sectores % semanal en tramos de velocidad (0-15MB, 15-30, ...)
+
+# TODO crear vista 'velocidadesSemanales' en Producción
+# TODO añadir fichero configuración a Producción
 
 quit()
 		
