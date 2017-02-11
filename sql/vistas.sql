@@ -22,6 +22,7 @@ SELECT date(fecha) dia, strftime('%H',fecha) hora,* from anotacion where fecha>=
 
 // Datos de la semana que ha pasado 
 
+create view velocidadesSemanales as
 select 
 	dia,
 	max(ping) max_ping, avg(ping) avg_ping, min(ping) min_ping, 
@@ -67,4 +68,4 @@ select
 		when '11' then 'Nov' 
 		when '12' then 'Dic' 
 		else '' 
-	end as month ;
+	end as month ;	
