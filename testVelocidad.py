@@ -76,7 +76,7 @@ def getAnotacionesSemanales():
 				{ "dia" : """2017-02-07""", "max_ping" : """113.771""", "avg_ping" : """90.6546666666667""", "min_ping" : """81.384""", "max_bajada" : """24.4781403170456""", "avg_bajada" : """20.2730597238812""", "min_bajada" : """13.2055103784335""", "max_subida" : """3.09292332230586""", "avg_subida" : """2.96405310906295""", "min_subida" : """2.81179095514377""" },
 				{ "dia" : """2017-02-08""", "max_ping" : """114.991""", "avg_ping" : """91.9907777777778""", "min_ping" : """78.938""", "max_bajada" : """46.0563639650376""", "avg_bajada" : """24.0650956913638""", "min_bajada" : """6.80702860741628""", "max_subida" : """3.35004730077555""", "avg_subida" : """2.87022332932429""", "min_subida" : """2.41445603005469""" },
 				{ "dia" : """2017-02-09""", "max_ping" : """120.304""", "avg_ping" : """88.3216666666667""", "min_ping" : """78.147""", "max_bajada" : """45.703996606504""", "avg_bajada" : """26.3445890659491""", "min_bajada" : """7.96970023204263""", "max_subida" : """3.35515793642163""", "avg_subida" : """2.84024639108092""", "min_subida" : """1.99096124551157""" },
-				{ "dia" : """2017-02-11""", "max_ping" : """165.028""", "avg_ping" : """95.706""", "min_ping" : """75.985""", "max_bajada" : """45.8590445983241""", "avg_bajada" : """22.0138659418411""", "min_bajada" : """8.06844512621522""", "max_subida" : """3.26924579763993""", "avg_subida" : """2.92126476368912""", "min_subida" : """2.76515263362812""" },
+				{ "dia" : """2017-02-10""", "max_ping" : """165.028""", "avg_ping" : """95.706""", "min_ping" : """75.985""", "max_bajada" : """45.8590445983241""", "avg_bajada" : """22.0138659418411""", "min_bajada" : """8.06844512621522""", "max_subida" : """3.26924579763993""", "avg_subida" : """2.92126476368912""", "min_subida" : """2.76515263362812""" },
 			]
 
 		rsdos=[]
@@ -141,7 +141,8 @@ def generarGraficas(rutaSVGRsdo):
 setConfig('./config.json')
 
 parser=argparse.ArgumentParser()
-parser.add_argument('-g', '--grafica', help=u'Muestra gráficamente las velocidades registradas'.encode("utf-8"), default=4, type=int)
+parser.add_argument('-m', '--medicion', help=u'Registra la velocidad actual de la conexión.'.encode("utf-8"), default=4,action="store_true")
+parser.add_argument('-g', '--grafica', help=u'Muestra gráficamente las velocidades registradas'.encode("utf-8"),action="store_true")
 parser.add_argument('-v', '--version',help=u"Muestra la version del programa".encode("utf-8"),action="store_true")
 
 args = parser.parse_args()
@@ -156,10 +157,5 @@ if args.grafica:
 
 # IDEA gráfica sectores % semanal en tramos de velocidad (0-15MB, 15-30, ...)
 
-# TODO crear vista 'velocidadesSemanales' en Producción
-# TODO añadir fichero configuración a Producción
-
-quit()
-		
 r=invocarComando("speedtest"," --json")
 insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
