@@ -136,9 +136,9 @@ def generarGraficas(rutaSVGRsdo):
 	chart.add('Min', min)
 	chart.render()
 
-	chart.render_to_file('chart.svg')  	
+	chart.render_to_file(rutaSVGRsdo)  	
 	
-setConfig('./config.json')
+setConfig('{D}/config.json'.format(D=getDirectorioEjecucionScript()))
 
 parser=argparse.ArgumentParser()
 parser.add_argument('-m', '--medicion', help=u'Registra la velocidad actual de la conexión.'.encode("utf-8"), default=4,action="store_true")
@@ -152,10 +152,12 @@ if args.version:
 	exit(0)     
 
 if args.grafica:
-	generarGraficas('./chart.svg')
+	
+	generarGraficas('{D}/chart.svg'.format(D=getDirectorioEjecucionScript()))
 	exit(0)
 
 # IDEA gráfica sectores % semanal en tramos de velocidad (0-15MB, 15-30, ...)
+# TODO corregir vista 'velocidadesSemanales' para que contemple los últimos 7 días
 
 r=invocarComando("speedtest"," --json")
 insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
