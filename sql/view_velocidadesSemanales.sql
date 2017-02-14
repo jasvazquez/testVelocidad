@@ -13,6 +13,6 @@ from
 		cast(subida as decimal) subida
 	from anotacion 
 	where 
-		fecha>=datetime('now','start of day','-4 days') and fecha<=datetime('now','start of day')
+		fecha>=datetime('now','start of day','-7 days') and fecha<=datetime('now','start of day')
 )
 group by dia
