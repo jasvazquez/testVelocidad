@@ -3,4 +3,5 @@ include/
 lib/
 pip-selfcheck.json
 *.svg
+config.json
 __pycache__/

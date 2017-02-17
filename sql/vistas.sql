@@ -1,3 +1,5 @@
+/* [https://goo.gl/vXiUZZ] Manejo de fechas en SQLITE*/
+
 select max(ping) max_ping, avg(ping) ping, min(ping) min_ping, avg(bajada) bajada, avg(subida) subida from anotacion;
 select * from anotacion order by ping desc;
 
@@ -16,7 +18,7 @@ from (
 select fecha  from anotacion where cast(fecha as datetime)>=strftime(date('now'));
 select date('now');
 
-/* [https://goo.gl/vXiUZZ] Manejo de fechas en SQLITE*/
+
 
 SELECT date(fecha) dia, strftime('%H',fecha) hora,* from anotacion where fecha>=datetime('now','start of day') and fecha<=datetime('now','start of day','+24 hours','-1 seconds'); 
 
@@ -37,7 +39,7 @@ from
 		cast(subida as decimal) subida
 	from anotacion 
 	where 
-		fecha>=datetime('now','start of day','-4 days') and fecha<=datetime('now','start of day')
+		fecha>=datetime('now','start of day','-7 days') and fecha<=datetime('now','start of day')
 )
 group by dia;
 
@@ -69,3 +71,17 @@ select
 		when '12' then 'Dic' 
 		else '' 
 	end as month ;	
+	
+	create view velocidadesDiarias as
+	select 
+		date(fecha) dia, 
+		strftime('%H:%M',fecha) hora,
+		cast(ping as decimal) ping,
+		cast(bajada as decimal) bajada,
+		cast(subida as decimal) subida
+	from anotacion 
+	where 
+		fecha>=datetime('now','start of day','-1 seconds') and fecha<=datetime('now','start of day','+24 hours')
+		order by id;
+		
+delete from anotacion where fecha like '2017-02-13%';		
