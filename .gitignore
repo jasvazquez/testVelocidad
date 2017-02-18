@@ -5,3 +5,4 @@ pip-selfcheck.json
 *.svg
 config.json
 __pycache__/
+sql/datos_*
