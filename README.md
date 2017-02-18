@@ -15,7 +15,7 @@ Instala las dependencias recogidas en el fichero [dependencias.lst](https://gith
 
 Aunque el script se puede utilizar desde la terminal de comandos (```python testVelocidad.py --help``` para más información de los parámetros actualmente permitidos) se aconseja programar su uso mediante _tareas cron_. Sirva de ejemplo el siguiente fragmento:
 
-> #minute	hour	mday	month	wday	who	command
+> \# minute	hour	mday	month	wday	who	command
 > 0	*	*	*	*	root	source /home/MIUSUARIO/scripts/testVelocidad/bin/activate && python /home/MIUSUARIO/scripts/testVelocidad/testVelocidad.py -m
 
 En el que se solicita, cada hora, que se realice (y anote para su uso posterior) una nueva medición de la velocidad (parámetro -m)
