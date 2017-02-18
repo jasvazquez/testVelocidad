@@ -22,6 +22,7 @@ Aunque el script se puede utilizar desde la terminal de comandos (```python test
 En el que se solicita, cada hora, que se realice (y anote para su uso posterior) una nueva medición de la velocidad (parámetro -m)
 
 En el ejemplo:
+
 1. Se hace uso de los entornos virtuales de Python (_source /home/MIUSUARIO/scripts/testVelocidad/bin/activate_)
 1. El directorio en el que se ha colocado el script es _/home/MIUSUARIO/scripts/testVelocidad_
 1. Debes sustituir MIUSUARIO por tu nombre de usuario "Linux" y/o adaptar la ruta absoluta (cron no "entiende" de rutas relativas) a la ubicación en la que tengas el código del script
