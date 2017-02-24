@@ -85,3 +85,5 @@ select
 		order by id;
 		
 delete from anotacion where fecha like '2017-02-13%';		
+
+select datetime('now','start of day','-1 seconds','-7 days'),datetime('now','start of day','-1 seconds');

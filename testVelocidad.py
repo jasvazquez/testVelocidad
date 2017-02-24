@@ -146,6 +146,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('-m', '--medicion', help=u'Registra la velocidad actual de la conexión.'.encode("utf-8"), default=4,action="store_true")
 parser.add_argument('-g', '--grafica', help=u'Muestra gráficamente las velocidades registradas'.encode("utf-8"),action="store_true")
 parser.add_argument('-v', '--version',help=u"Muestra la version del programa".encode("utf-8"),action="store_true")
+parser.add_argument('-f', '--fail',help=u"Simula un fallo lanzando una excepción".encode("utf-8"),action="store_true")
 
 args = parser.parse_args()
 
@@ -153,8 +154,10 @@ if args.version:
 	printVersion()
 	exit(0)     
 
-if args.grafica:
+if args.fail:
+	raise ValueError('Vaya petazo ha pegado el programa.')
 	
+if args.grafica:
 	generarGraficas('{D}/chart.svg'.format(D=getDirectorioEjecucionScript()))
 	exit(0)
 
