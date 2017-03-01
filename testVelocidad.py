@@ -186,5 +186,9 @@ if args.listarAnotaciones or args.listarAnotaciones==0:
 # IDEA 	[https://goo.gl/cxBgF3] lanzar SQL desde la línea de comandos 
 #		(p.e. para actualizar vistas en Explotación o limpiar tabla anotaciones antes de un commit)
 
-r=invocarComando("speedtest"," --json")
-insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
+try:
+	r=invocarComando("speedtest"," --json")
+	insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
+except: 
+	# Si no hay conexión, anotamos el fallo con todas las "velocidades" a cero
+	insertarMedicion(0,0,0,0)
