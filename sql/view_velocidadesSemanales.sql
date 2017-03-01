@@ -15,4 +15,4 @@ from
 	where 
 		fecha>=datetime('now','start of day','-7 days') and fecha<=datetime('now','start of day')
 )
-group by dia
+group by dia;

@@ -139,11 +139,27 @@ def generarGraficas(rutaSVGRsdo):
 	chart.render()
 
 	chart.render_to_file(rutaSVGRsdo)  	
+
+def getUltimasAnotaciones(numAnotaciones):
+	t=(numAnotaciones,)
+	cur=db_select("SELECT * FROM ultimasAnotaciones LIMIT ?",t)
+	return cur.fetchall();	
+
+def listarAnotaciones(numAnotaciones):
+
+	anotaciones= "\nFECHA                  BAJADA    SUBIDA   PING\n"
+	anotaciones+="----------------------------------------------\n"
+
+	for a in getUltimasAnotaciones(numAnotaciones):
+		anotaciones+="{F}...{B:.>7,.2f}...{S:.>7.2f}...{P:.>4.0f}\n".format( F=a.fecha, B=float(a.bajada),S=float(a.subida), P=float(a.ping))
+
+	return anotaciones
 	
 setConfig('{D}/config.json'.format(D=getDirectorioEjecucionScript()))
 
 parser=argparse.ArgumentParser()
-parser.add_argument('-m', '--medicion', help=u'Registra la velocidad actual de la conexión.'.encode("utf-8"), default=4,action="store_true")
+parser.add_argument('-m', '--medicion', help=u'Registra la velocidad actual de la conexión.'.encode("utf-8"),action="store_true")
+parser.add_argument('-la', '--listarAnotaciones', help=u'Muestra las N últimas mediciones de velocidad.'.encode("utf-8"), nargs="?", const=10, type=int)
 parser.add_argument('-g', '--grafica', help=u'Muestra gráficamente las velocidades registradas'.encode("utf-8"),action="store_true")
 parser.add_argument('-v', '--version',help=u"Muestra la version del programa".encode("utf-8"),action="store_true")
 parser.add_argument('-f', '--fail',help=u"Simula un fallo lanzando una excepción".encode("utf-8"),action="store_true")
@@ -160,6 +176,10 @@ if args.fail:
 if args.grafica:
 	generarGraficas('{D}/chart.svg'.format(D=getDirectorioEjecucionScript()))
 	exit(0)
+
+if args.listarAnotaciones or args.listarAnotaciones==0:
+	print listarAnotaciones(args.listarAnotaciones)
+	exit(0)	
 
 # IDEA gráfica sectores % semanal en tramos de velocidad (0-15MB, 15-30, ...)
 
