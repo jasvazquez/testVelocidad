@@ -154,7 +154,15 @@ def listarAnotaciones(numAnotaciones):
 		anotaciones+="{F}...{B:.>7,.2f}...{S:.>7.2f}...{P:.>4.0f}\n".format( F=a.fecha, B=float(a.bajada),S=float(a.subida), P=float(a.ping))
 
 	return anotaciones
-	
+
+def anotarVelocidadActual():
+	try:
+	r=invocarComando("speedtest"," --json")
+	insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
+except: 
+	# Si no hay conexión, anotamos el fallo con todas las "velocidades" a cero
+	insertarMedicion(0,0,0,0)
+		
 setConfig('{D}/config.json'.format(D=getDirectorioEjecucionScript()))
 
 parser=argparse.ArgumentParser()
@@ -186,9 +194,4 @@ if args.listarAnotaciones or args.listarAnotaciones==0:
 # IDEA 	[https://goo.gl/cxBgF3] lanzar SQL desde la línea de comandos 
 #		(p.e. para actualizar vistas en Explotación o limpiar tabla anotaciones antes de un commit)
 
-try:
-	r=invocarComando("speedtest"," --json")
-	insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
-except: 
-	# Si no hay conexión, anotamos el fallo con todas las "velocidades" a cero
-	insertarMedicion(0,0,0,0)
+anotarVelocidadActual()
