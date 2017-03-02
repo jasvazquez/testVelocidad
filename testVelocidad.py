@@ -157,11 +157,11 @@ def listarAnotaciones(numAnotaciones):
 
 def anotarVelocidadActual():
 	try:
-	r=invocarComando("speedtest"," --json")
-	insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
-except: 
-	# Si no hay conexión, anotamos el fallo con todas las "velocidades" a cero
-	insertarMedicion(0,0,0,0)
+		r=invocarComando("speedtest"," --json")
+		insertarMedicion(r['ping'],r['download']/10**6,r['upload']/10**6,r['server']['id'])
+	except: 
+		# Si no hay conexión, anotamos el fallo con todas las "velocidades" a cero
+		insertarMedicion(0,0,0,0)
 		
 setConfig('{D}/config.json'.format(D=getDirectorioEjecucionScript()))
 
