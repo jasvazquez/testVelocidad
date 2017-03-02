@@ -3,7 +3,7 @@
 
 Script para la comprobación periódica de la velocidad de conexión a Internet y la generación de informes estadísticos de resultados.
 
-Más **información** (pendiente de publicar un artículo sobre la herramienta aquí mostrada) en el [Informático de Guardia](https://andalinux.wordpress.com)
+Más **información** en el [artículo publicado en el Informático de Guardia](https://andalinux.wordpress.com/2017/02/28/generando-informes-de-velocidad-adsl-automaticamente/)
 
 ## Instalación
 
