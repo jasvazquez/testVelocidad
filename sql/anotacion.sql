@@ -11,5 +11,5 @@ CREATE TABLE anotacion (
 CREATE TRIGGER trg_Anotacion after INSERT ON Anotacion
 for each row
 BEGIN
-  UPDATE anotacion set fecha = DATETIME('NOW') where id=new.id;
-END;     
+  UPDATE anotacion set fecha = DATETIME('NOW','localtime') where id=new.id;
+END;
